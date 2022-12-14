@@ -1,2 +1,2 @@
 # blue_budgie
-Python Repository for my projects
+python repository for my projects
