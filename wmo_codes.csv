@@ -1,0 +1,29 @@
+Code,Description,Icon
+0,Klarer Himmel,https://worldweather.wmo.int/images/24a.png
+1,Überwiegend klar,https://worldweather.wmo.int/images/22a.png
+2,teilweise bewölkt,https://worldweather.wmo.int/images/21a.png
+3,bewölkt,https://worldweather.wmo.int/images/23a.png
+45,Nebel,https://worldweather.wmo.int/images/16.png
+48,Absetzender Reifnebel,https://worldweather.wmo.int/images/17.png
+51,Leichter Nieselregen,https://worldweather.wmo.int/images/15.png
+53,mäßiger Nieselregen,https://worldweather.wmo.int/images/12.png
+55,dichter Nieselregen,https://worldweather.wmo.int/images/12.png
+56,Leichter gefrierender Nieselregen,https://worldweather.wmo.int/images/12.png
+57,dichter gefrierender Nieselregen,https://worldweather.wmo.int/images/12.png
+61,Leichter Regen,https://worldweather.wmo.int/images/12.png
+63,Mäßiger Regen,https://worldweather.wmo.int/images/12.png
+65,Starker Regen,https://worldweather.wmo.int/images/12.png
+66,Leichter gefrierender Regen,https://worldweather.wmo.int/images/8.png
+67,Starker gefrierender Regen,https://worldweather.wmo.int/images/8.png
+71,Leichter Schneefall,https://worldweather.wmo.int/images/5.png
+73,Mäßiger Schneefall,https://worldweather.wmo.int/images/5.png
+75,Starker Schneefall,https://worldweather.wmo.int/images/5.png
+77,Hagelkörner,https://worldweather.wmo.int/images/3.png
+80,Leichte Regenschauer,https://worldweather.wmo.int/images/9.png
+81,Mäßige Regenschauer,https://worldweather.wmo.int/images/9.png
+82,Starke Regenschauer,https://worldweather.wmo.int/images/9.png
+85,Leichter Schneeschauer,https://worldweather.wmo.int/images/5.png
+86,Starker Schneeschauer,https://worldweather.wmo.int/images/5.png
+95,Gewitter: Schwach oder mäßig,https://worldweather.wmo.int/images/2.png
+96,Gewitter mit leichtem Hagel,https://worldweather.wmo.int/images/2.png
+99,Gewitter mit schwerem Hagel,https://worldweather.wmo.int/images/2.png
