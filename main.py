@@ -1,40 +1,11 @@
 import datetime as dt
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import pandas as pd
 import smtplib as smtp
-from email.mime.text import MIMEText
 from person_dict import db as db_dict
 
-# TODO:1. ###DONE###:Aktuell wird mittels "precip_24h:mm > 0 gecheckt ob es regnet. Auf weather_symbol_24h:idx zu
-#  checken wäre besser. Das Symbol bzw. deren Beschreibung gibt besser aufschluss auf das allgemeine Wetter.
-# TODO:2. ###DON###: Statt Plain Text, HTML Text mit Anhang und Grafiken verschicken.
-
-# TODO:3. ###DONE###: Frei zugängliche Wetterdaten,  mittels JSON https://open-meteo.com/en verwenden.
-# TODO:4. ###DONE###: Durchschnittliches Wetter von Morgens Mittags Abend Nachts extrahieren und anzeigen.
-
-# TODO:5. ###DONE###: Dictionary erstellen, hier werden Personen eingetragen mit Email und Koordinaten.
-# TODO:6. Der Weathertext Code, bei MORGENS, MITTAGS, ABEND, wird aus der aus der Mitte der Daten genommen. Andere Lösung?
-
-# TODO:7. ###DONE###:Today Sun, Datum entfernen und nur Uhrzeit
-# TODO:8. Statt Herz Icon oder Wind Wettericon gefühlt schreiben?
-# TODO:9. Überschrift "Wettervorhersage für den 09.Dezember" anpassen.
-
-# TODO.10. ###DONE###: Wenn es regnet wird in daily_time_slots_parent ein Regensymbol eingefügt.
-# TODO:11. ###DONE###: Wettersymbole anhand des Wettercodes einfügen. HTML ICONS finden? ->https://worldweather.wmo.int/en/wxicons.html
-
-# TODO:12. API ändern ?https://dataset.api.hub.zamg.ac.at/app/station-new/historical/klima-v1-1h?anonymous=true
-# TODO:13. Simpleres HTML Template ? Sollte plattformübergreifend besser dargestellt werden können.
-
-# TODO:14. Zusätzlich zum Wettertext, "windig", "sonnig", "regnerisch", hinzufügen?
-# TODO.15. Andere Wettericons suchen und implementieren.
-# TODO.16. Je nach Niederschlag wird ein anderes Wettericon eingefügt, Regen, Hagel, Schnee.
-
-morning = 6
-midday = 12
-evening = 18
-night = 23
-
-
+# Funktion gibt Wetterbeschreibung aus wmo_codes.csv aus.
 def weather_text(weathercode_input):
     df = pd.read_csv("wmo_codes.csv")
     w_code = weathercode_input
@@ -43,7 +14,7 @@ def weather_text(weathercode_input):
             weather_descr = row["Description"]
             return weather_descr
 
-
+# Funktion gibt Wetterlogo bzw. HTML Link aus wmo_codes.csv aus.
 def weather_logo(weathercode_input):
     df = pd.read_csv("wmo_codes.csv")
     w_code = weathercode_input
@@ -52,30 +23,31 @@ def weather_logo(weathercode_input):
             weather_pic = row["Icon"]
             return weather_pic
 
-
 def avg_calc(value_input, r_start, r_stop):
     value_range = value_input[r_start:r_stop]
     sum_value = 0
     for x in value_range:
         sum_value += float(x)
-    avg_sum = round(sum_value / len(value_range), 2)
+    avg_sum = round(sum_value / len(value_range), 1)
     return avg_sum
 
 
-# Aktuelles und Enddatum setzen
+# Aktuelles Datum und Enddatum setzen
 today_date = dt.datetime.utcnow().date()
 end_date = today_date + dt.timedelta(days=0)
 today_date_str = str(today_date)
 end_date_str = str(end_date)
 
+
 for person in db_dict:
+    # Daten aus Personendatenbank werden abgerufen
     name = person["name"]
     longitude = person["longitude"]
     latitude = person["latitude"]
     city = person["city"]
     email = person["email"]
 
-    # open meteo Wetterdaten mittels json abrufen
+    # Wetterdaten abrufen und speichern
     open_meteo_json = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,apparent_temperature,precipitation,rain,showers,snowfall,weathercode,windspeed_10m&models=icon_seamless&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,sunrise,sunset,precipitation_sum,windspeed_10m_max&timezone=auto&start_date={today_date_str}&end_date={end_date_str}"
     weather_df = pd.read_json(open_meteo_json)
     # weather_df.to_json("weather_forecast_24.json")
@@ -97,8 +69,7 @@ for person in db_dict:
     h_wind = hourly_weather["windspeed_10m"]
     h_w_code = hourly_weather["weathercode"]
 
-    # Morning Wettervorhersage
-
+    # Wettervorhersage Morgen
     m_h_temp = avg_calc(h_temp, morning, midday)
     m_h_a_temp = avg_calc(h_a_temp, morning, midday)
     m_h_prec = avg_calc(h_prec, morning, midday)
@@ -107,7 +78,7 @@ for person in db_dict:
     m_h_w_text = weather_text(h_w_code[8])
     m_h_w_symbol = weather_logo(h_w_code[8])
 
-    # Midday Wettervorhersage
+    # Wettervorhersage Mittag
     mi_h_temp = avg_calc(h_temp, midday, evening)
     mi_h_a_temp = avg_calc(h_a_temp, midday, evening)
     mi_h_prec = avg_calc(h_prec, midday, evening)
@@ -116,7 +87,7 @@ for person in db_dict:
     mi_h_w_text = weather_text(h_w_code[14])
     mi_h_w_symbol = weather_logo(h_w_code[14])
 
-    # Evening Wettervorhersage
+    # Wettervorhersage Abend
     e_h_temp = avg_calc(h_temp, evening, night)
     e_h_a_temp = avg_calc(h_a_temp, evening, night)
     e_h_prec = avg_calc(h_prec, evening, night)
@@ -145,7 +116,7 @@ for person in db_dict:
     daily_sunset_convert = dt.datetime.strptime(daily_sunset_str, '%Y-%m-%d %H:%M')
     daily_sunset_time = daily_sunset_convert.strftime('%H:%M')
 
-    # html template
+    # Einfügen der Daten in ein Html template
 
     html = f'''
     <html>
@@ -229,7 +200,7 @@ for person in db_dict:
      </div>
         <hr class="hr-bottom" style="display: inline-block;width: 55%;border-style: solid;border-width: 10px;border-color: #71C9CE;"><br>
         <div class="chip" style="display: inline-block;padding: 10px 30px;height: 80px;font-size: 16px;line-height: 20px;border-radius: 25px;background-color: #E3FDFD;font-family: 'Trebuchet MS', sans-serif;width: 235px;">
-            <img src="https://github.com/mcdeedz/green_budgie/blob/main/IMG_0316.jpg?raw=true" alt="Person" width="100" height="100" style="float: left;margin: 0 10px 0 -25px;height: 70px;width: 70px;border-radius: 50%;">
+            <img src="https://github.com/mcdeedz/green_budgie/blob/main/cv_pic_4.PNG?raw=true" alt="Person" width="100" height="100" style="float: left;margin: 0 10px 0 -25px;height: 70px;width: 70px;border-radius: 50%;">
             <span style="line-height: 25px;">Christian Magdits, 32</span> <br>
             <span style="line-height: 25px;">Junior Python Developer</span> <br>
             <span style="line-height: 25px;">Junior Web Developer</span>
@@ -239,14 +210,11 @@ for person in db_dict:
         '''
 
     # Versand der Wetterdaten
-    my_email = "90mcdeeds@gmail.com"
-    my_password = "wgwoftojrwwoemcu"
-
-    # Create a MIMEMultipart class, and set up the From, To, Subject fields
+    my_email = "email"
+    my_password = "password"
 
     email_message = MIMEMultipart()
     email_message['From'] = my_email
-    email_message['To'] = "christian.magdits@gmail.com"
     email_message['Subject'] = f'Wettervorhersage {d_time}'
     email_message.attach(MIMEText(html, "html"))
     email_string = email_message.as_string()
@@ -258,3 +226,28 @@ for person in db_dict:
             from_addr=my_email,
             to_addrs=f"{email}",
             msg=f"{email_string}")
+
+
+# TODO:1. ###DONE###:Aktuell wird mittels "precip_24h:mm > 0 gecheckt ob es regnet. Auf weather_symbol_24h:idx zu
+#  checken wäre besser. Das Symbol bzw. deren Beschreibung gibt besser aufschluss auf das allgemeine Wetter.
+# TODO:2. ###DONE###: Statt Plain Text, HTML Text mit Anhang und Grafiken verschicken.
+
+# TODO:3. ###DONE###: Frei zugängliche Wetterdaten,  mittels JSON https://open-meteo.com/en verwenden.
+# TODO:4. ###DONE###: Durchschnittliches Wetter von Morgens Mittags Abend Nachts extrahieren und anzeigen.
+
+# TODO:5. ###DONE###: Dictionary erstellen, hier werden Personen eingetragen mit Email und Koordinaten.
+# TODO:6. Der Weathertext Code, bei MORGENS, MITTAGS, ABEND, wird aus der aus der Mitte der Daten genommen. Andere Lösung?
+
+# TODO:7. ###DONE###:Today Sun, Datum entfernen und nur Uhrzeit
+# TODO:9. Überschrift "Wettervorhersage für den 09.Dezember" anpassen.
+
+# TODO.10. ###DONE###: Wenn es regnet wird in daily_time_slots_parent ein Regensymbol eingefügt.
+# TODO:11. ###DONE###: Wettersymbole anhand des Wettercodes einfügen. HTML ICONS finden? ->https://worldweather.wmo.int/en/wxicons.html
+
+# TODO:12. API ändern ?https://dataset.api.hub.zamg.ac.at/app/station-new/historical/klima-v1-1h?anonymous=true
+# TODO:13. Simpleres HTML Template ? Sollte plattformübergreifend besser dargestellt werden können.
+
+# TODO:14. Zusätzlich zum Wettertext, "windig", "sonnig", "regnerisch", hinzufügen?
+# TODO.15. Andere Wettericons suchen und implementieren.
+# TODO.16. Je nach Niederschlag wird ein anderes Wettericon eingefügt, Regen, Hagel, Schnee.
+# TODO 17. Werte runden
