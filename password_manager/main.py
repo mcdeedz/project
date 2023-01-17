@@ -6,30 +6,6 @@ from password_encryption import *
 from database import *
 
 
-# TODO:1. ###DONE### Passwort mit Base64 Kodierung in die SQL Datenbank speichern.
-# TODO:2. ###DONE### Passwort dekodieren->Funktion erstellt.
-# TODO:3, Context Menü erstellen um Password, entschlüsselt zu kopieren.--->Noch sinnvoll? Siehe TODO 7.
-# TODO:4. ###DONE### Password Abfrage für Zugangsdaten
-# TODO:5. ###DONE### Password Falsch Meldung lässt sich nicht mit Enter schließen
-
-# TODO:6. ###PRIO1###: In credentials.py, die Zugangsdaten in ein Pandas Dataframe laden und jede Tabellen Spalte einzeln ausgeben,
-#         um Daten jeder Spalte handhaben zu können. https://www.activestate.com/resources/quick-reads/how-to-display-data-in-a-table-using-tkinter/
-
-# TODO:7. ###PRIO2### Nachdem TODO 6 erledigt, die Passwörter in credentials maskieren und einen PW kopieren Button implementieren
-#         der die PWs entschlüsselt.
-
-# TODO:8. ###PRIO3###: Statt Base64 Kodierung, Passwörter mit einer RSA verschlüsselung in der SQL Datenbank hinterlegen.
-#  https://www.geeksforgeeks.org/how-to-encrypt-and-decrypt-strings-in-python/
-
-# TODO:9. ###DONE### Code aufteilen ?
-# TODO 11. _tkinter.TclError: bad window path name ".!toplevel2.!entry2"
-# TODO 13: ###DONE###  Andere Schleife verwenden!! iterrows erstell eine Kopie der Objekte her!!!
-# TODO:14. ###DONE### Show Password Button im Hauptfenster
-# TODO:15. ###DONE### Es ist mglw. sinnvoller das auslesen der Datenbank und die Weiterverarbeitung der Daten in eine eigene Klasse auszulagern
-#  Eine Klasse für das Auslesen der Daten und eine für die Darstellung im Fenster.
-# TODO:16. ###TODO 1###: Password Encryption Class erstellen.
-
-
 def get_password_input():
     password = password_var.get()
     return password
@@ -207,3 +183,28 @@ add_password_button = Button(text="Hinzufügen", height=1, width=15,
 add_password_button.grid(column=2, row=5)
 
 window.mainloop()
+
+
+
+# TODO:1. ###DONE### Passwort mit Base64 Kodierung in die SQL Datenbank speichern.
+# TODO:2. ###DONE### Passwort dekodieren->Funktion erstellt.
+# TODO:3, Context Menü erstellen um Password, entschlüsselt zu kopieren.--->Noch sinnvoll? Siehe TODO 7.
+# TODO:4. ###DONE### Password Abfrage für Zugangsdaten
+# TODO:5. ###DONE### Password Falsch Meldung lässt sich nicht mit Enter schließen
+
+# TODO:6. ###PRIO1###: In credentials.py, die Zugangsdaten in ein Pandas Dataframe laden und jede Tabellen Spalte einzeln ausgeben,
+#         um Daten jeder Spalte handhaben zu können. https://www.activestate.com/resources/quick-reads/how-to-display-data-in-a-table-using-tkinter/
+
+# TODO:7. ###PRIO2### Nachdem TODO 6 erledigt, die Passwörter in credentials maskieren und einen PW kopieren Button implementieren
+#         der die PWs entschlüsselt.
+
+# TODO:8. ###PRIO3###: Statt Base64 Kodierung, Passwörter mit einer RSA verschlüsselung in der SQL Datenbank hinterlegen.
+#  https://www.geeksforgeeks.org/how-to-encrypt-and-decrypt-strings-in-python/
+
+# TODO:9. ###DONE### Code aufteilen ?
+# TODO 11. _tkinter.TclError: bad window path name ".!toplevel2.!entry2"
+# TODO 13: ###DONE###  Andere Schleife verwenden!! iterrows erstell eine Kopie der Objekte her!!!
+# TODO:14. ###DONE### Show Password Button im Hauptfenster
+# TODO:15. ###DONE### Es ist mglw. sinnvoller das auslesen der Datenbank und die Weiterverarbeitung der Daten in eine eigene Klasse auszulagern
+#  Eine Klasse für das Auslesen der Daten und eine für die Darstellung im Fenster.
+# TODO:16. ###TODO 1###: Password Encryption Class erstellen.
