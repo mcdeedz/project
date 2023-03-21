@@ -188,7 +188,7 @@ window.mainloop()
 
 # TODO:1. ###DONE### Passwort mit Base64 Kodierung in die SQL Datenbank speichern.
 # TODO:2. ###DONE### Passwort dekodieren->Funktion erstellt.
-# TODO:3, Context Menü erstellen um Password, entschlüsselt zu kopieren.--->Noch sinnvoll? Siehe TODO 7.
+# TODO:3, Context Menü erstellen um Password, entschlüsselt zu kopieren.--->Noch sinnvoll? Siehe TODO 7
 # TODO:4. ###DONE### Password Abfrage für Zugangsdaten
 # TODO:5. ###DONE### Password Falsch Meldung lässt sich nicht mit Enter schließen
 
