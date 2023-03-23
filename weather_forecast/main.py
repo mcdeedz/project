@@ -5,7 +5,7 @@ import pandas as pd
 import smtplib as smtp
 from person_dict import db as db_dict
 
-# Funktion gibt Wetterbeschreibung aus wmo_codes.csv aus.
+# Funktion gibt Wetterbeschreibung aus wmo_codes.csv aus
 def weather_text(weathercode_input):
     df = pd.read_csv("wmo_codes.csv")
     w_code = weathercode_input
